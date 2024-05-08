@@ -1,0 +1,11 @@
+{
+    "files.autoSave": "off",
+    "editor.cursorStyle": "line",
+    "editor.autoClosingBrackets": "languageDefined",
+    "editor.autoIndent": "full",
+    "editor.bracketPairColorization.enabled": false,
+    "go.goroot": "/usr/local/go",
+    "terminal.integrated.env.linux": {
+        "PATH": "/usr/local/go/bin:${env:PATH}"
+    }
+}
