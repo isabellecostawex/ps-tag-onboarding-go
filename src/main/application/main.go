@@ -52,18 +52,19 @@ func saveUser(c *gin.Context) {
 		return
 	}
 
-	newUser.ID = generateID()
-
-	existingUser, exists := users[newUser.ID]
-	if exists {
-		existingUser.FirstName = newUser.FirstName
-		existingUser.LastName = newUser.LastName
-		existingUser.Email = newUser.Email
-		existingUser.Age = newUser.Age
-		newUser = existingUser
+	if newUser.ID != "" {
+		_, exists := users[newUser.ID]
+		if !exists {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "User Not Found"})
+			return
+		}
+		users[newUser.ID] = newUser
+		c.JSON(http.StatusOK, gin.H{"message": "User updated successfully", "updated_user": newUser})
+		return
 	}
-	users[newUser.ID] = newUser
 
+	newUser.ID = generateID()
+	users[newUser.ID] = newUser
 	c.JSON(http.StatusCreated, newUser)
 }
 
