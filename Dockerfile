@@ -1,13 +1,16 @@
-FROM golang:1.22.2
+FROM golang:latest
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY go.mod .
+COPY go.mod .
 
 RUN go mod download
 
 COPY . .
 
-RUN go build - o main
+RUN go build - o main .
+
+EXPOSE 8080
 
 CMD ["./main"]
