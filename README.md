@@ -30,7 +30,7 @@ json
     "last_name": "Payne",
     "email": "johnpayne@gmail.com",
     "age": 22
-}  
+} 
 
 Fail request if it's missing any required fields;
 Ensure that email addresses are properly formatted;
