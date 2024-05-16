@@ -14,6 +14,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: users_database
+    networks:
+      - app-network
 
   postgres:
     image: postgres:latest
@@ -28,6 +30,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+    networks:
+      - app-network
+
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: dpgadmin
@@ -38,7 +43,11 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@localhost.com
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
-      - "8080:80"
+      - "8081:80"
+    networks:
+      - app-network
+
 networks:
-  default:
-    name: postgres-network
+  app-network:
+    driver: bridge
+
