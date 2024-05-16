@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -88,19 +87,15 @@ func saveUser(c *gin.Context) {
 	}
 
 	newUser.ID = userID
-	c.JSON(http.StatusOK, gin.H{"message": "User updated successfully", "updated_user": newUser})
+	c.JSON(http.StatusOK, gin.H{"message": "User saved successfully", "updated_user": newUser})
 }
 
 func findUser(c *gin.Context) {
-	userID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID provided"})
-		return
-	}
-
+	userID := c.Param("id")
 	var user UserData
-	err = db.QueryRow("SELECT id, first_name, last_name, email, age FROM users WHERE ID=$1", userID).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
+	err := db.QueryRow("SELECT id, first_name, last_name, email, age FROM users WHERE ID=$1", userID).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
 	if err != nil {
+		log.Printf("Error finding User: %v", err)
 		c.JSON(http.StatusNotFound, gin.H{"error": "User Not Found"})
 		return
 	}
