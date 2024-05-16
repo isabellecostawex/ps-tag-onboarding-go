@@ -2,8 +2,9 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ import (
 )
 
 type UserData struct {
-	ID        string `json:"id"`
+	ID        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
@@ -24,20 +25,20 @@ func initDB() {
 	var err error
 	db, err = sql.Open("postgres", "postgres://postgres:123456@postgres:5432/users_database?sslmode=disable")
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error connecting to the database: %v", err)
 	}
+	defer db.Close()
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
-		id SERIAL PRIMARY KEY,
-		first_name VARCHAR(100) NOT NULL,
-		last_name VARCHAR(100) NOT NULL,
-		email VARCHAR(250) NOT NULL,
-		age INT NOT NULL
-	)`)
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(100) NOT NULL,
+        last_name VARCHAR(100) NOT NULL,
+        email VARCHAR(250) NOT NULL,
+        age INT NOT NULL
+    )`)
 
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error creating users table: %v", err)
 	}
-
 }
 
 func saveUser(c *gin.Context) {
@@ -68,22 +69,23 @@ func saveUser(c *gin.Context) {
 		return
 	}
 
-	var userID string
+	var userID int
 
-	if newUser.ID != "" {
+	if newUser.ID != 0 {
 		_, err := db.Exec("UPDATE users SET first_name=$1, last_name=$2, email=$3, age=$4 WHERE id=$5", newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age, newUser.ID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update User"})
 			return
 		}
+		userID = newUser.ID
 	} else {
-		_, err := db.Exec("INSERT INTO users (id, first_name, last_name, email, age) VALUES ($1, $2, $3, $4, $5)", "", newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age)
+		var lastInsertID int
+		err := db.QueryRow("INSERT INTO users (first_name, last_name, email, age) VALUES ($1, $2, $3, $4) RETURNING id", newUser.FirstName, newUser.LastName, newUser.Email, newUser.Age).Scan(&lastInsertID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save User"})
-			fmt.Println(err)
 			return
 		}
-
+		userID = lastInsertID
 	}
 
 	newUser.ID = userID
@@ -91,9 +93,14 @@ func saveUser(c *gin.Context) {
 }
 
 func findUser(c *gin.Context) {
-	userID := c.Param("id")
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID provided"})
+		return
+	}
+
 	var user UserData
-	err := db.QueryRow("SELECT id, first_name, last_name, email, age FROM users WHERE ID=$1", userID).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
+	err = db.QueryRow("SELECT id, first_name, last_name, email, age FROM users WHERE ID=$1", userID).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Age)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User Not Found"})
 		return
@@ -107,5 +114,5 @@ func main() {
 	router := gin.Default()
 	router.POST("/save", saveUser)
 	router.GET("/find/:id", findUser)
-	router.Run("localhost:8080")
+	router.Run(":8080")
 }
