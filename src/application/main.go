@@ -27,7 +27,6 @@ func initDB() {
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
-	defer db.Close()
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         first_name VARCHAR(100) NOT NULL,
