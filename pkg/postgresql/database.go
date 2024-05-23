@@ -2,7 +2,6 @@ package postgresql
 
 import (
 	"database/sql"
-	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -13,7 +12,7 @@ func initDB() {
 	var err error
 	db, err = sql.Open("postgres", "postgres://postgres:123456@postgres:5432/users_database?sslmode=disable")
 	if err != nil {
-		log.Fatalf("Error connecting to the database: %v", err)
+		return err
 	}
 	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -24,6 +23,7 @@ func initDB() {
     )`)
 
 	if err != nil {
-		log.Fatalf("Error creating users table: %v", err)
+		return err
 	}
+	return nil
 }
