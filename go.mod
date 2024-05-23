@@ -1,4 +1,4 @@
-module ps-tag-onboarding-go
+module github.com/isabellecostawex/ps-tag-onboarding-go
 
 go 1.18
 
