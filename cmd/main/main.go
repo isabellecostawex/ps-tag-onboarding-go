@@ -1,24 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"net/http"
 	
 	"github.com/gin-gonic/gin"
-	// "database"
-	// "handlers"
+	"github.com/isabellecostawex/ps-tag-onboarding-go/pkg/postgresql"
+	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/api/handlers"
 
 )
 
 func main() {
-	// err:= database.initDB()
+	err:= postgresql.initDB()
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
 	
 	router := gin.Default()
-	// router.POST("/save", api.saveUser)
-	// router.GET("/find/:id", api.findUser)
+	router.POST("/save", handlers.SaveUserHandler)
+	router.GET("/find/:id", handlers.FindUserHandler)
 	router.Run(":8080")
 }
