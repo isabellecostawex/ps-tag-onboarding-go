@@ -37,13 +37,23 @@ func SaveUserHandler (c *gin.Context) {
 		return
 	}
 
-	userID, err := services.SaveOrUpdateUser(&newUser)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save user"})
-		return
+	var userID int
+	var err error
+
+	if newUser.ID != 0 {
+		err = services.UpdateUser(&newUser)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update user"})
+			return
+		}
+		userID = newUser.ID
+	} else {
+		userID, err = services.CreateUser(&newUser)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save user"})
+			return
+		}
 	}
-
 	newUser.ID = userID
-	c.JSON(http.StatusOK, gin.H{"message": "User Saved successfully", "user": newUser})
+	c.JSON(http.StatusOK, gin.H{"message": "User saved successfully", "user": newUser})
 }
-
