@@ -7,7 +7,7 @@ COPY go.sum .
 
 RUN go mod download
 
-COPY src/application/main.go ./
+COPY cmd/main/main.go ./
 
 RUN go build -o main .
 
