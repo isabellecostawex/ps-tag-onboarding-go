@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	err:= postgresql.initDB()
+	err:= postgresql.InitDB()
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}

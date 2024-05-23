@@ -6,6 +6,6 @@ import (
 )
 
 func UpdateUser(user *models.UserData) error {
-	_, err := postgresql.db.Exec("UPDATE users SET first_name=$1, last_name=$2, email=$3, age=$4 WHERE id=$5", user.FirstName, user.LastName, user.Email, user.Age, user.ID)
+	_, err := postgresql.DB.Exec("UPDATE users SET first_name=$1, last_name=$2, email=$3, age=$4 WHERE id=$5", user.FirstName, user.LastName, user.Email, user.Age, user.ID)
 	return err
 }

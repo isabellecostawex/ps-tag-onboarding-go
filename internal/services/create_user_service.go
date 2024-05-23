@@ -7,7 +7,7 @@ import (
 
 func CreateUser(user *models.UserData) (int, error){
 	var lastinsertID int
-	err := postgresql.db.QueryRow("INSERT INTO users (first_name, last_name, email, age) VALUES ($1, $2, $3, $4) RETURNING id", user.FirstName, user.LastName, user.Email, user.Age).Scan(&lastinsertID)
+	err := postgresql.DB.QueryRow("INSERT INTO users (first_name, last_name, email, age) VALUES ($1, $2, $3, $4) RETURNING id", user.FirstName, user.LastName, user.Email, user.Age).Scan(&lastinsertID)
 	if err != nil {
 		return 0, err
 	}
