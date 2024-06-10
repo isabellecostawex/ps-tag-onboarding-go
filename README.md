@@ -13,17 +13,19 @@ Implement an API service for managing user data, including creation, getting dat
 This endpoint stores the user data into the database, or updates when the "id" is given. 
 -Accepts JSON payloads for user data in these formats:
 
-json  
+json 
+```shell 
 {   
     "first_name": "John",
     "last_name": "Payne",
     "email": "johnpayne@gmail.com",
     "age": 22
 }  
-
+```
 or 
 
 json 
+```shell 
 {   
     "id": "user-20"
     "first_name": "John",
@@ -31,6 +33,7 @@ json
     "email": "johnpayne@gmail.com",
     "age": 22
 } 
+```
 
 Fail request if it's missing any required fields;
 Ensure that email addresses are properly formatted;
