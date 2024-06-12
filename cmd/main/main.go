@@ -16,7 +16,6 @@ func main() {
 	}
 	
 	router := gin.Default()
-	router.POST("/save", handlers.SaveUserHandler)
-	router.GET("/find/:id", handlers.FindUserHandler)
+	handlers.RegisterRoutes(router)
 	router.Run(":8080")
 }
