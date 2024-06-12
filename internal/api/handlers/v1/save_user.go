@@ -9,23 +9,47 @@ import (
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
+type saveUserRequest struct {
+	ID        int    `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Age       int    `json:"age"`
+}
+
+type saveUserResponse struct {
+	ID      int    `json:"id"`
+	Message string `json:"message"`
+}
+
 func SaveUserHandler(c *gin.Context) {
-    var newUser users.UserData
+	var req saveUserRequest
 
-    if err := c.ShouldBindJSON(&newUser); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON data in request body"})
-        return
-    }
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON data in request body"})
+		return
+	}
 
-    userRepo := &postgres.UsersRepository{}
-    usersService := services.UserManagementService{UserRepo: userRepo}
+	newUser := users.UserData{
+		FirstName: req.FirstName,
+		LastName:  req.LastName,
+		Email:     req.Email,
+		Age:       req.Age,
+	}
 
-    userID, err := usersService.SaveUser(newUser)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+	userRepo := &postgres.UsersRepository{}
+	usersService := services.UserManagementService{UserRepo: userRepo}
 
-    newUser.ID = userID
-    c.JSON(http.StatusOK, gin.H{"message": "User saved successfully", "user": newUser})
+	userID, err := usersService.SaveUser(newUser)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	response := saveUserResponse{
+		ID:      userID,
+		Message: "User saved successfully",
+	}
+
+	c.JSON(http.StatusOK, response)
 }
