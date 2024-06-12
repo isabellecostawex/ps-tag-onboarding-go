@@ -8,6 +8,14 @@ import (
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
+type findUserResponse struct {
+	ID        int    `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Age       int    `json:"age"`
+}
+
 func FindUserHandler(c *gin.Context) {
 	userID := c.Param("id")
 
@@ -19,5 +27,12 @@ func FindUserHandler(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	response := findUserResponse{
+		ID:        user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+		Age:       user.Age,
+	}
+	c.JSON(http.StatusOK, response)
 }
