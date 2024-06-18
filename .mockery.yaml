@@ -1,0 +1,5 @@
+with-expecter: true
+inpackage: false
+case: underscore
+dir: mocks
+log-level: warn
