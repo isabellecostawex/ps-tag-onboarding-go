@@ -13,7 +13,7 @@ import (
 
 func TestSaveUser(t *testing.T) {
     t.Run("Valid User", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -33,7 +33,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("User Underage", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -51,7 +51,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Invalid Email", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -69,7 +69,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing First Name", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -86,7 +86,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing Last Name", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -103,7 +103,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing Email", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -120,7 +120,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Update Existing User", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         existingUser := users.UserData{
@@ -141,7 +141,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Repository CreateUser Error", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -164,7 +164,7 @@ func TestSaveUser(t *testing.T) {
 
 func TestRetrieveUser(t *testing.T) {
     t.Run("User Found", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         expectedUser := users.UserData{
@@ -185,7 +185,7 @@ func TestRetrieveUser(t *testing.T) {
     })
 
     t.Run("User Not Found", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(mocks.Mockery_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         mockRepo.On("RetrieveUser", "1").Return(users.UserData{}, errors.New("user not found"))
