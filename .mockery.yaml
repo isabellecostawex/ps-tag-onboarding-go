@@ -5,9 +5,9 @@ mockname: "Mockery_{{.InterfaceName}}"
 outpkg: "{{.InterfaceDirRelative}}"
 filename: "mock_{{.InterfaceName}}.go"
 packages:
-    github.com/isabellecostawex/ps-tag-onboarding-go/internal/services:
+    github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users:
         interfaces:
-            UserManagementService:
+            UsersRepository:
                 config:
                     inpackage: false
                     dir: internal/services/mocks
