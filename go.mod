@@ -1,6 +1,6 @@
 module github.com/isabellecostawex/ps-tag-onboarding-go
 
-go 1.18
+go 1.22
 
 require (
 	github.com/gin-gonic/gin v1.10.0
