@@ -16,13 +16,14 @@ type findUserResponse struct {
 	Age       int    `json:"age"`
 }
 
-func FindUserHandler(c *gin.Context) {
+type UserHandler struct {
+	UserService services.UserManagementService
+}
+
+func (handler *UserHandler) FindUserHandler(c *gin.Context) {
 	userID := c.Param("id")
 
-	userRepo := &postgres.UsersRepository{}
-	usersService := services.UserManagementService{UserRepo: userRepo}
-
-	user, err := usersService.RetrieveUser(userID)
+	user, err := handler.UserService.RetrieveUser(userID)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return

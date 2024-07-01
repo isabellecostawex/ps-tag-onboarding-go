@@ -15,7 +15,10 @@ func main() {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
 	
-	router := gin.Default()
-	handlers.RegisterRoutes(router)
+	repo := user.UsersRepository{DB: postgresql.DB}
+	service := services.UserManagementService{UserRepo: &repo}
+	handler := handlers.UserHandler{UserService: service}
+	router := handlers.RegisterRoutes(&handler)
+
 	router.Run(":8080")
 }

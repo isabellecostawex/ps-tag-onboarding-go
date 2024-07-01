@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users/postgres"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
@@ -22,7 +21,11 @@ type saveUserResponse struct {
 	Message string `json:"message"`
 }
 
-func SaveUserHandler(c *gin.Context) {
+type UserHandler struct {
+	UserService services.UserManagementService
+}
+
+func (handler *UserHandler) SaveUserHandler(c *gin.Context) {
 	var req saveUserRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -37,10 +40,7 @@ func SaveUserHandler(c *gin.Context) {
 		Age:       req.Age,
 	}
 
-	userRepo := &postgres.UsersRepository{}
-	usersService := services.UserManagementService{UserRepo: userRepo}
-
-	userID, err := usersService.SaveUser(newUser)
+	userID, err := handler.UserService.SaveUser(newUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
