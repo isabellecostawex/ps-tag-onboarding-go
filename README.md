@@ -47,7 +47,6 @@ Returns user data by ID;
 - Requirements:  
 
 http://localhost:8080/find/1234
-
 Returns user data by ID;
 Returns a error if the user is not found.
 
