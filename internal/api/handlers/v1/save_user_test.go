@@ -16,6 +16,11 @@ import (
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/mock"
 )
+func setupRouter (service *services.UserManagementService) *gin.Engine {
+    router := gin.Default()
+    router.POST("/save", handlers.SaveUserHandler(service))
+    return router
+}
 
 func TestSaveUserHandler(t *testing.T) {
     t.Run("Valid User", func(t *testing.T) {
@@ -36,11 +41,14 @@ func TestSaveUserHandler(t *testing.T) {
         jsonBody, _ := json.Marshal(newUser)
         ginContext.Request, _ = http.NewRequest(http.MethodPost, "/save", bytes.NewReader(jsonBody))
 
-        handlers.SaveUserHandler(&service)(ginContext)
+        UserHandler := UserHandler{UserService: service}
+        router := RegisterRoutes(&UserHandler)
+        router.ServeHTTP(recorder, ginContext.Request)
+
 
         assert.Equal(t, http.StatusOK, recorder.Code)
 
-        var responseBody handlers.SaveUserResponse
+        var responseBody SaveUserResponse
         err := json.Unmarshal(recorder.Body.Bytes(), &responseBody)
         assert.NoError(t, err)
         assert.Equal(t, 1, responseBody.ID)
