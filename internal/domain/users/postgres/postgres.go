@@ -5,8 +5,8 @@ import (
 	"errors"
 
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/pkg/postgresql"
 )
+
 type UsersRepository struct {
 	db *sql.DB
 }

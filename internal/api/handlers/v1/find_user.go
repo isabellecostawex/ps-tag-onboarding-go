@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users/postgres"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
