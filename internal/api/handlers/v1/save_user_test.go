@@ -18,7 +18,7 @@ import (
 )
 func setupRouter (service *services.UserManagementService) *gin.Engine {
     router := gin.Default()
-    router.POST("/save", handlers.SaveUserHandler(service))
+    router.POST("/save", handlers.UserHandler(service))
     return router
 }
 
