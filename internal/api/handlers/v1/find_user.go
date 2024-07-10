@@ -1,4 +1,4 @@
-package handlers
+package v1
 
 import (
 	"net/http"
@@ -15,11 +15,11 @@ type findUserResponse struct {
 	Age       int    `json:"age"`
 }
 
-type UserHandler struct {
+type findUserHandler struct {
 	UserService services.UserManagementService
 }
 
-func (handler *UserHandler) FindUserHandler(c *gin.Context) {
+func (handler *findUserHandler) FindUserHandler(c *gin.Context) {
 	userID := c.Param("id")
 
 	user, err := handler.UserService.RetrieveUser(userID)
