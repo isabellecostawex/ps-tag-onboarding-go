@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/api/handlers"
+	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/api/handlers/v1"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users/postgres"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/pkg/postgresql"
@@ -18,9 +18,9 @@ func main() {
 
 	repo := postgres.UsersRepository{DB: postgresql.DB}
 	service := services.UserManagementService{UserRepo: &repo}
-	handler := handlers.UserHandler{UserService: service}
+	handler := v1.UserHandler{UserService: service}
 	router := gin.Default()
-	handlers.RegisterRoutes(router, &handler)
+	v1.RegisterRoutes(router, &handler)
 
 	router.Run(":8080")
 }
