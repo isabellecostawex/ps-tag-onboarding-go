@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
 type saveUserRequest struct {
@@ -19,10 +18,6 @@ type saveUserRequest struct {
 type saveUserResponse struct {
 	ID      int    `json:"id"`
 	Message string `json:"message"`
-}
-
-type UserHandler struct {
-	UserService services.UserManagementService
 }
 
 func (handler *UserHandler) SaveUserHandler(c *gin.Context) {

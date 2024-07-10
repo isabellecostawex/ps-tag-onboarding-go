@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
 )
 
 type findUserResponse struct {
@@ -15,11 +14,7 @@ type findUserResponse struct {
 	Age       int    `json:"age"`
 }
 
-type findUserHandler struct {
-	UserService services.UserManagementService
-}
-
-func (handler *findUserHandler) FindUserHandler(c *gin.Context) {
+func (handler *UserHandler) FindUserHandler(c *gin.Context) {
 	userID := c.Param("id")
 
 	user, err := handler.UserService.RetrieveUser(userID)
