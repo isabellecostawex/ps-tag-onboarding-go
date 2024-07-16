@@ -15,7 +15,7 @@ type saveUserRequest struct {
 	Age       int    `json:"age"`
 }
 
-type saveUserResponse struct {
+type SaveUserResponse struct {
 	ID      int    `json:"id"`
 	Message string `json:"message"`
 }
@@ -41,7 +41,7 @@ func (handler *UserHandler) SaveUserHandler(c *gin.Context) {
 		return
 	}
 
-	response := saveUserResponse{
+	response := SaveUserResponse{
 		ID:      userID,
 		Message: "User saved successfully",
 	}
