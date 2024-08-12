@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-	
 	"github.com/gin-gonic/gin"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/pkg/postgresql"
 	"github.com/isabellecostawex/ps-tag-onboarding-go/internal/api/handlers"
