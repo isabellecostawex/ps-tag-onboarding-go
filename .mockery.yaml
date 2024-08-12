@@ -1,15 +1,10 @@
 with-expecter: true
-inpackage: false
-dir: internal/mocks
+inpackage: true
+dir: "{{.InterfaceDirRelative}}"
 mockname: "Mock_{{.InterfaceName}}"
-outpkg: mocks
+outpkg: "{{.InterfaceDirRelative}}"
 filename: "mock_{{.InterfaceName}}.go"
 packages:
     github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users:
         interfaces:
             UsersRepository:
-                config:
-                    inpackage: false
-                    dir: internal/mocks
-                    outpkg: mocks
-                    
