@@ -5,7 +5,6 @@ import (
     "testing"
 
     "github.com/isabellecostawex/ps-tag-onboarding-go/internal/domain/users"
-    "github.com/isabellecostawex/ps-tag-onboarding-go/internal/mocks"
     "github.com/isabellecostawex/ps-tag-onboarding-go/internal/services"
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/mock"
@@ -13,7 +12,7 @@ import (
 
 func TestSaveUser(t *testing.T) {
     t.Run("Valid User", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := users.NewMock_UsersRepository(t)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -29,11 +28,10 @@ func TestSaveUser(t *testing.T) {
 
         assert.NoError(t, err)
         assert.Equal(t, 1, userID)
-        mockRepo.AssertExpectations(t)
     })
 
     t.Run("User Underage", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -51,7 +49,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Invalid Email", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -69,7 +67,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing First Name", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -86,7 +84,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing Last Name", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -103,7 +101,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Missing Email", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -120,7 +118,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Update Existing User", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         existingUser := users.UserData{
@@ -141,7 +139,7 @@ func TestSaveUser(t *testing.T) {
     })
 
     t.Run("Repository CreateUser Error", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := new(users.Mock_UsersRepository)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         newUser := users.UserData{
@@ -164,7 +162,7 @@ func TestSaveUser(t *testing.T) {
 
 func TestRetrieveUser(t *testing.T) {
     t.Run("User Found", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := users.NewMock_UsersRepository(t)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         expectedUser := users.UserData{
@@ -181,11 +179,10 @@ func TestRetrieveUser(t *testing.T) {
 
         assert.NoError(t, err)
         assert.Equal(t, expectedUser, user)
-        mockRepo.AssertExpectations(t)
     })
 
     t.Run("User Not Found", func(t *testing.T) {
-        mockRepo := new(mocks.UsersRepository)
+        mockRepo := users.NewMock_UsersRepository(t)
         service := services.UserManagementService{UserRepo: mockRepo}
 
         mockRepo.On("RetrieveUser", "1").Return(users.UserData{}, errors.New("user not found"))
@@ -195,6 +192,5 @@ func TestRetrieveUser(t *testing.T) {
         assert.Error(t, err)
         assert.Equal(t, "user not found", err.Error())
         assert.Equal(t, users.UserData{}, user)
-        mockRepo.AssertExpectations(t)
     })
 }
